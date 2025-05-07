@@ -1,0 +1,40 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root{
+    --primary: #ffffff;
+    --text: #272727;
+    --accent: #5057fd;
+    --accent-ligth: #eff3ff;
+}
+
+body{
+    font-family: 'Poppins', sans-serif;
+    min-height: 100vh;
+    color: var(--text);
+    background: var(--primary);
+}
+
+a{
+    text-decoration: none;
+    color: currentColor;
+}
+
+li{
+    list-style: none;
+    line-height: 2;   
+}
+span{
+    font-size: 14px;
+}
+
+p{
+    font-weight: 500;
+}
+
+.pricing__section{
+    margin-block: 3rem;
+}

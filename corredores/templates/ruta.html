@@ -1,0 +1,149 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Planificador de Rutas - Runners</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Leaflet y Leaflet Draw -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css"/>
+  <link rel="stylesheet" href="{% static 'estilo/ruta.css' %}">
+
+</head>
+<body>
+
+<div id="map"></div>
+
+<div class="controls">
+  <input type="text" id="nombreRuta" placeholder="Nombre de la ruta">
+  <input type="text" id="pace" placeholder="Pace min/km (ej: 5:00)">
+  <textarea id="notaRuta" placeholder="Notas adicionales..."></textarea><br>
+  <button onclick="calcularRuta()">Calcular tiempo</button>
+  <button onclick="guardarRuta()">Guardar y Descargar GPX</button>
+  <div class="result" id="resultado"></div>
+</div>
+
+<!-- Scripts -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+
+<script>
+let map = L.map('map').setView([0, 0], 13);
+let drawnLayer = null;
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  maxZoom: 18
+}).addTo(map);
+
+map.locate({ setView: true, maxZoom: 15 });
+
+const drawnItems = new L.FeatureGroup();
+map.addLayer(drawnItems);
+
+const drawControl = new L.Control.Draw({
+  edit: { featureGroup: drawnItems },
+  draw: {
+    polyline: true,
+    polygon: false,
+    marker: false,
+    rectangle: false,
+    circle: false,
+    circlemarker: false
+  }
+});
+map.addControl(drawControl);
+
+let rutaLatLngs = [];
+
+map.on('draw:created', function (e) {
+  if (drawnLayer) drawnItems.removeLayer(drawnLayer);
+  drawnLayer = e.layer;
+  drawnItems.addLayer(drawnLayer);
+  rutaLatLngs = drawnLayer.getLatLngs();
+  document.getElementById("resultado").innerText = `Ruta trazada con ${calcularDistancia(rutaLatLngs).toFixed(2)} km.`;
+});
+
+function calcularDistancia(latlngs) {
+  let total = 0;
+  for (let i = 1; i < latlngs.length; i++) {
+    total += latlngs[i - 1].distanceTo(latlngs[i]);
+  }
+  return total / 1000;
+}
+
+function calcularRuta() {
+  const pace = document.getElementById('pace').value;
+  if (!pace || rutaLatLngs.length < 2) {
+    alert("Agrega un pace y dibuja una ruta.");
+    return;
+  }
+
+  const partes = pace.split(':');
+  if (partes.length !== 2 || isNaN(partes[0]) || isNaN(partes[1])) {
+    alert("Pace inválido. Usa min:seg (ej. 4:45)");
+    return;
+  }
+
+  const paceMin = parseInt(partes[0]) + parseInt(partes[1]) / 60;
+  const distancia = calcularDistancia(rutaLatLngs);
+  const tiempoTotalMin = distancia * paceMin;
+
+  const horas = Math.floor(tiempoTotalMin / 60);
+  const minutos = Math.floor(tiempoTotalMin % 60);
+  const segundos = Math.round((tiempoTotalMin % 1) * 60);
+
+  document.getElementById("resultado").innerText =
+    `Distancia: ${distancia.toFixed(2)} km — Tiempo estimado: ${horas}h ${minutos}m ${segundos}s`;
+}
+
+function guardarRuta() {
+  if (!drawnLayer) return alert("Traza una ruta primero.");
+  const nombre = document.getElementById("nombreRuta").value;
+  const nota = document.getElementById("notaRuta").value;
+  const latlngs = drawnLayer.getLatLngs().map(p => ({ lat: p.lat, lng: p.lng }));
+  const distancia = calcularDistancia(drawnLayer.getLatLngs());
+
+  fetch('/guardar/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': getCookie('csrftoken') // Asegúrate de tener CSRF token válido
+    },
+    body: JSON.stringify({
+      nombre: nombre,
+      nota: nota,
+      distancia: distancia,
+      coordenadas: latlngs
+    })
+  }).then(resp => resp.json()).then(data => {
+    if (data.ok) {
+      alert("Ruta guardada correctamente.");
+      window.location.href = `/exportar/${data.id}/`;  // Redirige para descargar GPX
+    } else {
+      alert("Error al guardar.");
+    }
+  });
+}
+
+// Extraer CSRF para Django
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+    const cookies = document.cookie.split(';');
+    for (let cookie of cookies) {
+      cookie = cookie.trim();
+      if (cookie.startsWith(name + '=')) {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
+</script>
+
+</body>
+</html>
