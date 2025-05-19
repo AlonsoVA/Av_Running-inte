@@ -7,6 +7,13 @@ class Corredor(models.Model):
     edad = models.IntegerField()
     tiempo_5k = models.FloatField()
 
+class Usuarioinfo(models.Model):
+    apodo = models.CharField(max_length=20)
+    edad = models.CharField(max_length=3)
+    descripcion = models.CharField(max_length=100)
+    imagen = models.ImageField(upload_to='imagenes_usuarios/', blank=True, null=True)
+
+
 class Registros(models.Model):
     nombre = models.CharField(max_length=100)
     correo = models.EmailField(max_length=100)

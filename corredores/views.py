@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect # type: ignore
-from corredores.models import Registros
+from corredores.models import Registros, Usuarioinfo
 from django.http import HttpResponse # type: ignore
 from django.contrib.auth.hashers import make_password, check_password # type: ignore
 from django.contrib.auth import login # type: ignore
@@ -13,6 +13,29 @@ def  ruta(request):
 
 def planes(request):
     return render(request, "planes.html")
+
+def usuario(request):
+    if request.method == "POST":
+        apodo = request.POST.get("apodo")
+        edad = request.POST.get("edad")
+        descripcion = request.POST.get("descripcion")
+        imagen = request.FILES.get("imagen")
+
+        nuevo_usuario = Usuarioinfo(
+            apodo=apodo,
+            edad=edad,
+            descripcion=descripcion,
+            imagen=imagen
+        )
+        nuevo_usuario.save()
+
+        return redirect(f'/usuario/info/{nuevo_usuario.id}/')  # o donde quieras redirigir
+
+    return render(request, "usuario.html")
+
+def mostrar_usuario(request, id):
+    usuario = Usuarioinfo.objects.get(id=id)
+    return render(request, "infouser.html", {'usuario': usuario})
 
 def registro(request):
     if request.method == "POST":
