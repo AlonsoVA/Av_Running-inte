@@ -1,0 +1,1 @@
+{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"},{"v":{"$numberInt":"2"},"key":{"id":{"$numberInt":"1"}},"name":"__primary_key__","unique":true}],"uuid":"7703996caadb48318859bb7ed8c6e56c","collectionName":"corredores_usuarioinfo","type":"collection"}
