@@ -1,0 +1,146 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil del Corredor</title>
+    <style>
+        /* Colores */
+        :root {
+            --fondo: #0a0a0a;
+            --texto-principal: #eaeaea;
+            --amarillo-suave: #FCF259;
+            --borde-suave: rgba(230, 219, 116, 0.3);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--fondo);
+            color: var(--texto-principal);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(-30px);
+            animation: fadeIn 1.5s ease-out forwards;
+        }
+
+        header h1 {
+            font-size: 2rem;
+            color: var(--amarillo-suave);
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            font-size: 1rem;
+            color: #bbb;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-container {
+            background-color: #141414;
+            border: 1px solid var(--borde-suave);
+            border-radius: 16px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 0 30px rgba(230, 219, 116, 0.05);
+            position: relative;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="file"] {
+            background-color: #1e1e1e;
+            color: var(--texto-principal);
+            border: 1px solid var(--borde-suave);
+            border-radius: 8px;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        input::placeholder {
+            color: #aaa;
+        }
+
+        button {
+            background-color: var(--amarillo-suave);
+            color: #000;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            padding: 0.8rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #d6cb31;
+        }
+
+        /* Imagen decorativa */
+        .background-img {
+            position: absolute;
+            top: -60px;
+            right: -50px;
+            width: 100px;
+            opacity: 0.1;
+            z-index: 0;
+        }
+
+        .form-container::before {
+            content: "";
+            position: absolute;
+            top: -40px;
+            right: -40px;
+            width: 120px;
+            height: 120px;
+            background-image: url('/static/img/hh.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            opacity: 0.08;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Bienvenido Runner</h1>
+    <p>¿Estás listo para crear tu nuevo yo?</p>
+</header>
+
+<div class="form-container">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="text" name="apodo" placeholder="Apodo" required>
+        <input type="number" name="edad" placeholder="Edad" required>
+        <input type="text" name="descripcion" placeholder="¿Qué te describe?" required>
+        <input type="file" name="imagen" required>
+        <button type="submit">Crear perfil</button>
+    </form>
+</div>
+
+</body>
+</html>

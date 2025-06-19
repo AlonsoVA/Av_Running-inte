@@ -1,0 +1,159 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planes de Servicio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'estilosfinales/planes.css' %}">
+</head>
+<body>
+    <section class="pricing-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Elige el plan perfecto</h2>
+                <p class="section-subtitle">Selecciona la opción que mejor se adapte a tus necesidades</p>
+                
+                <div class="billing-toggle">
+                    <span>Facturación anual</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="billing-toggle">
+                        <span class="slider"></span>
+                    </label>
+                    <span>Facturación mensual</span>
+                </div>
+            </div>
+
+            <div class="pricing-grid">
+                <!-- Plan Gratis -->
+                <div class="pricing-card free-plan">
+                    <div class="plan-badge">Gratis</div>
+                    <div class="plan-details">
+                        <h3 class="plan-name">Plan Básico</h3>
+                        <p class="plan-description">Ideal para comenzar</p>
+                        <div class="plan-price">
+                            <span class="price-amount">$0</span>
+                            <span class="price-period">/siempre</span>
+                        </div>
+                        <ul class="plan-features">
+                            <li>Hasta 2GB de almacenamiento</li>
+                            <li>Acceso básico a funciones</li>
+                            <li>Soporte por correo electrónico</li>
+                            <li>Sin verificación de identidad</li>
+                            <li>Límite de 100 transacciones/mes</li>
+                        </ul>
+                    </div>
+                    <a href="#" class="plan-button">Comenzar ahora</a>
+                </div>
+
+                <!-- Plan Estándar (Recomendado) -->
+                <div class="pricing-card standard-plan recommended">
+                    <div class="plan-badge">Popular</div>
+                    <div class="plan-details">
+                        <h3 class="plan-name">Plan Estándar</h3>
+                        <p class="plan-description">La mejor relación calidad-precio</p>
+                        <div class="plan-price">
+                            <span class="price-amount monthly">$3.68</span>
+                            <span class="price-amount yearly">$2.99</span>
+                            <span class="price-period monthly">/mes</span>
+                            <span class="price-period yearly">/mes</span>
+                            <span class="billing-note yearly">(pago anual $35.88)</span>
+                        </div>
+                        <ul class="plan-features">
+                            <li>10GB de almacenamiento</li>
+                            <li>Acceso completo a funciones</li>
+                            <li>Soporte prioritario 24/5</li>
+                            <li>Verificación básica de identidad</li>
+                            <li>Hasta 1,000 transacciones/mes</li>
+                            <li>Informes mensuales</li>
+                        </ul>
+                    </div>
+                    <a href="#" class="plan-button">Elegir este plan</a>
+                </div>
+
+                <!-- Plan Premium -->
+                <div class="pricing-card premium-plan">
+                    <div class="plan-badge">Premium</div>
+                    <div class="plan-details">
+                        <h3 class="plan-name">Plan Empresarial</h3>
+                        <p class="plan-description">Para necesidades avanzadas</p>
+                        <div class="plan-price">
+                            <span class="price-amount monthly">$7.99</span>
+                            <span class="price-amount yearly">$6.50</span>
+                            <span class="price-period monthly">/mes</span>
+                            <span class="price-period yearly">/mes</span>
+                            <span class="billing-note yearly">(pago anual $78.00)</span>
+                        </div>
+                        <ul class="plan-features">
+                            <li>Almacenamiento ilimitado</li>
+                            <li>Todas las funciones premium</li>
+                            <li>Soporte 24/7 con respuesta inmediata</li>
+                            <li>Verificación avanzada de identidad</li>
+                            <li>Transacciones ilimitadas</li>
+                            <li>Informes avanzados y analytics</li>
+                            <li>Acceso prioritario a nuevas funciones</li>
+                        </ul>
+                    </div>
+                    <a href="#" class="plan-button">Contratar premium</a>
+                </div>
+            </div>
+
+            <div class="plan-comparison">
+                <h3>Comparación de planes</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Característica</th>
+                            <th>Básico</th>
+                            <th>Estándar</th>
+                            <th>Empresarial</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Almacenamiento</td>
+                            <td>2GB</td>
+                            <td>10GB</td>
+                            <td>Ilimitado</td>
+                        </tr>
+                        <tr>
+                            <td>Transacciones/mes</td>
+                            <td>100</td>
+                            <td>1,000</td>
+                            <td>Ilimitadas</td>
+                        </tr>
+                        <tr>
+                            <td>Soporte</td>
+                            <td>Correo electrónico</td>
+                            <td>Prioritario 24/5</td>
+                            <td>24/7 con respuesta inmediata</td>
+                        </tr>
+                        <tr>
+                            <td>Verificación</td>
+                            <td>No</td>
+                            <td>Básica</td>
+                            <td>Avanzada</td>
+                        </tr>
+                        <tr>
+                            <td>Informes</td>
+                            <td>No</td>
+                            <td>Mensuales básicos</td>
+                            <td>Avanzados con analytics</td>
+                        </tr>
+                        <tr>
+                            <td>Precio</td>
+                            <td>Gratis</td>
+                            <td>$3.68/mes</td>
+                            <td>$7.99/mes</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

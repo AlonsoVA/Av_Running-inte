@@ -1,0 +1,119 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tu Perfil de Corredor</title>
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --text: #f0f0f0;
+      --subtext: #bbbbbb;
+      --highlight: #1f1f1f;
+      --accent: #555;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 1rem;
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    .card {
+      background-color: var(--highlight);
+      border-radius: 20px;
+      padding: 2rem;
+      max-width: 400px;
+      width: 100%;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.02);
+      text-align: center;
+      animation: fadeUp 1s ease-out forwards;
+      transform: translateY(20px);
+      opacity: 0;
+    }
+
+    @keyframes fadeUp {
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1.2rem;
+      letter-spacing: 1px;
+    }
+
+    p {
+      margin: 0.5rem 0;
+      font-size: 1rem;
+      color: var(--subtext);
+    }
+
+    strong {
+      color: var(--text);
+    }
+
+    img {
+      margin-top: 1rem;
+      width: 160px;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid #222;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
+    }
+
+    .link {
+      margin-top: 2rem;
+      display: inline-block;
+      text-decoration: none;
+      background-color: #111;
+      padding: 0.7rem 1.5rem;
+      border-radius: 12px;
+      color: var(--text);
+      font-weight: bold;
+      transition: background 0.3s ease;
+    }
+
+    .link:hover {
+      background-color: #222;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h2>Tu perfil de corredor</h2>
+
+    <p><strong>Apodo:</strong> {{ usuario.apodo }}</p>
+    <p><strong>Edad:</strong> {{ usuario.edad }}</p>
+    <p><strong>Descripción:</strong> {{ usuario.descripcion }}</p>
+
+    {% if usuario.imagen %}
+      <img src="{{ usuario.imagen.url }}" alt="Imagen del corredor">
+    {% else %}
+      <p><em>No se subió imagen.</em></p>
+    {% endif %}
+
+    <a href="/usuario/" class="link">Editar o crear otro perfil</a>
+    <a href="/" class="link">Home</a>
+  </div>
+
+</body>
+</html>

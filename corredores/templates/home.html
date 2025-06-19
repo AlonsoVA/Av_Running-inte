@@ -1,0 +1,128 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <link rel="stylesheet" href="{% static 'estilosfinales/homefin.css'' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>VAC_Running</title>
+</head>
+<body>
+    
+    <section class="header">
+
+        <nav>
+
+            <a href="index.html"><img src='/static/img/Logito.png' ></a>
+            <div class="nav-links" id="navLinks">
+                <i class="fa fa-times" onclick="hideMenu()"></i>
+                <ul>
+                    <li><a href="Home2.html">Inicio</a></li>
+                    <li><a href="Nosotros.html">Nosotros</a></li>
+                    <li><a href="Servicios.html">Servicios</a></li>
+                    <li><a href='registro/'>Login</a></li>
+                </ul>
+            </div>
+           <i class="fa fa-bars" onclick="showMenu()"></i>
+
+        </nav>
+
+        <div class="text-box">
+            <h1>VAC_Runnign</h1>
+            <p>No se trata de ser el más rápido, sino de no rendirse, los límites están en tu mente.</p>
+            
+            <a href="" class="hero-btn">Unete a nuestra familia</a>
+        </div>
+
+    </section>
+
+    <section class="campus">
+
+        <h1>The Best Running!</h1>
+        <p>La mejor web para el mundo sobre el running y mejora personal <br> tanto fisica como mentalmente!</p>
+
+        <div class="row">
+            <div class="campus-col">
+                <img src='/static/img/Img3.jpeg'>
+                <div class="layer">
+                    <h3>Individual</h3>
+                </div>
+            </div>
+            <div class="campus-col">
+                <img src='/static/img/Img0.avif'>
+                <div class="layer">
+                    <h3>En grupo</h3>
+                </div>
+            </div>
+            <div class="campus-col">
+                <img src='/static/img/Img2.webp'>
+                <div class="layer">
+                    <h3>Competencias</h3>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <section class="course">
+        <h1>Nuestras secciones</h1>
+        <p>Estas son algunas de muchas secciones que tenemos para ti, concelas ya.</p>
+
+        <div class="row">
+            <div class="course-col">
+                <h3>Rutas</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                     Beatae vitae ratione eveniet totam alias autem tempora 
+                     eius eaque fugiat earum, quisquam voluptates dicta maiores 
+                     corporis vero accusantium sequi nemo ipsa.</p>
+            </div>
+            <div class="course-col">
+                <h3>Control de salud</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                     Beatae vitae ratione eveniet totam alias autem tempora 
+                     eius eaque fugiat earum, quisquam voluptates dicta maiores 
+                     corporis vero accusantium sequi nemo ipsa.</p>
+            </div>
+            <div class="course-col">
+                <h3>Ayuda especializada</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                     Beatae vitae ratione eveniet totam alias autem tempora 
+                     eius eaque fugiat earum, quisquam voluptates dicta maiores 
+                     corporis vero accusantium sequi nemo ipsa.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta">
+
+        <h1>Para mas informacion o sugerencias</h1>
+        <a href="" class="hero-btn">Contactanos</a>
+
+    </section>
+
+    <section class="footer">
+
+        <h4>Nosotros</h4>
+        <p>Lorem ipsum dolor sit, amet consectetur adipisicing 
+            elit.consectetur ab excepturi at accusamus consequatur 
+            facilis architecto voluptas possimus.
+        </p>
+
+        <div class="icons">
+            <i class="fa fa-facebook"></i>
+            <i class="fa fa-twitter"></i>
+            <i class="fa fa-instagram"></i>
+            <i class="fa fa-whatsapp"></i>
+        </div>
+
+    </section>
+
+<script src="HomseScript.js"></script>
+
+</body>
+</html>
