@@ -1,3 +1,7 @@
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
 # Entorno virtual
 venv/
 env/
@@ -6,23 +10,21 @@ env/
 __pycache__/
 *.py[cod]
 
-# Archivos de sistema
-.DS_Store
-Thumbs.db
+# Base de datos local
+db.sqlite3
 
-# Archivos sensibles
+# Archivos de logs
+*.log
+
+# Archivos de migraciones cacheados
+*/migrations/__pycache__/
+
+# Archivos de entorno (si tienes uno)
 .env
 
-# Base de datos local
-*.sqlite3
-
-# Archivos estáticos generados
-media/
-staticfiles/
-
-# Configuración de editores
+# Configuraciones de editores
 .vscode/
 .idea/
 
-# Logs
-*.log
+# Carpeta media (opcional, si no quieres guardar imágenes de usuarios en Git)
+media/
