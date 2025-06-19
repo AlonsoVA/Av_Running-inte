@@ -82,13 +82,16 @@ WSGI_APPLICATION = 'Intecorredores.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'NAME': 'miapprunning', 
+        'NAME': 'miapprunning',  # Nombre de la base de datos en Atlas
         'ENFORCE_SCHEMA': False,
         'CLIENT': {
-            'host': 'mongodb://localhost:27017',
+            'host': 'mongodb+srv://alonso08vazquez:alonso@cluster0.em3xlod.mongodb.net/miapprunning?retryWrites=true&w=majority&appName=Cluster0',
+            'username': 'alonso08vazquez',
+            'password': 'alonso',
         }
     }
 }
+
 
 
 # Password validation

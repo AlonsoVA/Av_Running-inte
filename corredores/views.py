@@ -14,6 +14,9 @@ def  ruta(request):
 def planes(request):
     return render(request, "planes.html")
 
+def rutapre(request):
+    return render(request, "rutaspre.html")
+
 def usuario(request):
     if request.method == "POST":
         apodo = request.POST.get("apodo")
