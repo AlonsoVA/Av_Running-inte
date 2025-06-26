@@ -13,7 +13,7 @@
 .header{
     min-height: 100vh;
     width: 100%;
-    background-image: linear-gradient(rgba(4, 9, 30, 0.7), rgba(4, 9, 30, 0.7)), url('/static/img/fondoVAC.jpg');
+    background-image: linear-gradient(rgba(4, 9, 30, 0.7), rgba(4, 9, 30, 0.7)), url('/static/img/corredores/home2.jpg');
     background-position: center;
     background-size: cover;
     position: relative;
@@ -253,7 +253,7 @@ h3 {
 .cta {
     margin: 100px auto;
     width: 80%;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/static/img/Fondo\ 1.jpg');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/static/img/corredores/home2.jpg');
     background-position: center;
     border-radius: 10px;
     text-align: center;

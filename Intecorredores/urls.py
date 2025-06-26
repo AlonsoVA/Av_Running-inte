@@ -23,12 +23,14 @@ from corredores import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='Homes'),
+    path('h-info/', views.home2, name='Home2'),
     path('ruta/', views.ruta),
     path('rutapre/', views.rutapre),
     path('registro/', views.registro, name='registro'),
     path('login/', views.login_view, name='login'),
     path('planes/', views.planes, name='planes'),
     path('usuario/', views.usuario, name='usuario'),
+    path('logout/', views.logout_view, name='logout'),
     path('usuario/info/<str:id>/', views.mostrar_usuario, name='infouser'),
 ]
 

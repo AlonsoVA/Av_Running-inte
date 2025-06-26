@@ -6,123 +6,105 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfil del Corredor</title>
-    <style>
-        /* Colores */
-        :root {
-            --fondo: #0a0a0a;
-            --texto-principal: #eaeaea;
-            --amarillo-suave: #FCF259;
-            --borde-suave: rgba(230, 219, 116, 0.3);
-        }
+    <canvas id="snowCanvas"></canvas>
+<style>
+:root {
+    --fondo: #0A0A0A;
+    --fondo-card: #121212;
+    --texto: #EDEDED;
+    --azul-neon: #00B8F4;
+    --naranja-tenue: #F4A300;
+    --gris-borde: #2A2A2A;
+}
 
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: var(--fondo);
-            color: var(--texto-principal);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-        }
+#snowCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.2; /* efecto sutil */
+}
 
-        header {
-            text-align: center;
-            margin-bottom: 2rem;
-            opacity: 0;
-            transform: translateY(-30px);
-            animation: fadeIn 1.5s ease-out forwards;
-        }
 
-        header h1 {
-            font-size: 2rem;
-            color: var(--amarillo-suave);
-            margin-bottom: 0.5rem;
-        }
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--fondo);
+    color: var(--texto);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    text-align: center; /* <--- Esto centrará TODO el texto del body */
+}
 
-        header p {
-            font-size: 1rem;
-            color: #bbb;
-        }
+header h1 {
+    font-size: 2.4rem;
+    color: var(--azul-neon);
+    margin-bottom: 0.3rem;
+}
 
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+header p {
+    color: #bdbdbd;
+    font-size: 1rem;
+}
 
-        .form-container {
-            background-color: #141414;
-            border: 1px solid var(--borde-suave);
-            border-radius: 16px;
-            padding: 2rem;
-            width: 90%;
-            max-width: 400px;
-            box-shadow: 0 0 30px rgba(230, 219, 116, 0.05);
-            position: relative;
-        }
+.form-container {
+    background-color: var(--fondo-card);
+    border: 1px solid var(--gris-borde);
+    border-radius: 16px;
+    padding: 2rem;
+    width: 90%;
+    max-width: 420px;
+    box-shadow: 0 0 20px rgba(0, 184, 244, 0.05);
+    position: relative;
+}
 
-        form {
-            display: flex;
-            flex-direction: column;
-        }
+input[type="text"],
+input[type="number"],
+input[type="file"] {
+    background-color: #1C1C1C;
+    color: var(--texto);
+    border: 1px solid var(--gris-borde);
+    border-radius: 8px;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+}
 
-        input[type="text"],
-        input[type="number"],
-        input[type="file"] {
-            background-color: #1e1e1e;
-            color: var(--texto-principal);
-            border: 1px solid var(--borde-suave);
-            border-radius: 8px;
-            padding: 0.75rem;
-            margin-bottom: 1rem;
-        }
+input:focus {
+    border-color: var(--azul-neon);
+    outline: none;
+    box-shadow: 0 0 10px rgba(0, 184, 244, 0.3);
+}
 
-        input::placeholder {
-            color: #aaa;
-        }
+button {
+    background-color: var(--azul-neon);
+    color: #000;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    padding: 0.8rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
 
-        button {
-            background-color: var(--amarillo-suave);
-            color: #000;
-            font-weight: bold;
-            border: none;
-            border-radius: 8px;
-            padding: 0.8rem;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
+button:hover {
+    background-color: #009bc4;
+}
 
-        button:hover {
-            background-color: #d6cb31;
-        }
+.footer {
+    margin-top: 2rem;
+    text-align: center;
+    color: var(--naranja-tenue);
+    font-size: 0.9rem;
+}
 
-        /* Imagen decorativa */
-        .background-img {
-            position: absolute;
-            top: -60px;
-            right: -50px;
-            width: 100px;
-            opacity: 0.1;
-            z-index: 0;
-        }
-
-        .form-container::before {
-            content: "";
-            position: absolute;
-            top: -40px;
-            right: -40px;
-            width: 120px;
-            height: 120px;
-            background-image: url('/static/img/hh.jpg');
-            background-size: cover;
-            background-repeat: no-repeat;
-            opacity: 0.08;
-        }
-    </style>
+</style>
 </head>
 <body>
 
@@ -134,13 +116,68 @@
 <div class="form-container">
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        <input type="text" name="apodo" placeholder="Apodo" required>
         <input type="number" name="edad" placeholder="Edad" required>
         <input type="text" name="descripcion" placeholder="¿Qué te describe?" required>
         <input type="file" name="imagen" required>
+        <img id="preview" class="logo-perfil" style="max-width: 100%; margin-top: 1rem;" alt="Vista previa">
         <button type="submit">Crear perfil</button>
     </form>
 </div>
+
+<script>
+    const canvas = document.getElementById("snowCanvas");
+    const ctx = canvas.getContext("2d");
+
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resize);
+    resize();
+
+    const flakes = Array.from({ length: 40 }, () => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        radius: Math.random() * 1.5 + 0.5,
+        speedY: Math.random() * 0.5 + 0.2,
+        speedX: Math.random() * 0.3 - 0.15
+    }));
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "#ffffff";
+        flakes.forEach(flake => {
+            ctx.beginPath();
+            ctx.arc(flake.x, flake.y, flake.radius, 0, Math.PI * 2);
+            ctx.fill();
+            flake.y += flake.speedY;
+            flake.x += flake.speedX;
+
+            if (flake.y > canvas.height) flake.y = 0;
+            if (flake.x > canvas.width) flake.x = 0;
+            if (flake.x < 0) flake.x = canvas.width;
+        });
+        requestAnimationFrame(draw);
+    }
+
+    draw();
+
+
+    const inputImagen = document.querySelector('input[name="imagen"]');
+    const preview = document.getElementById('preview');
+
+    inputImagen.addEventListener('change', function () {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
+
 
 </body>
 </html>

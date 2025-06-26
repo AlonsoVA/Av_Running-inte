@@ -5,185 +5,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'estilosfinales/Homefinal.css' %}">
-    <title>AV Running - Comunidad Premium de Corredores</title>
+    <title>VAC_Running</title>
 
-    <style>
-        body { margin: 0; font-family: sans-serif; background-color: #111; color: #eee; }
-#map { height: 75vh; }
-.controls {
-  padding: 10px;
-  background-color: #222;
-  text-align: center;
-}
-input, textarea {
-  padding: 6px;
-  font-size: 16px;
-  border-radius: 5px;
-  margin: 5px;
-  width: 250px;
-  border: none;
-}
-button {
-  padding: 7px 20px;
-  font-size: 16px;
-  background-color: #00ff99;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin: 5px;
-  color: #000;
-}
-.result {
-  margin-top: 10px;
-}
-    </style>
+    <link rel="stylesheet" href="/static/estilosfinales/home2.0fi.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
-
 <body>
-    <header>
-        <nav id="navbar">
-            <div class="contenedor-logo">
-                <img src="/static/img/correr-2.png" alt="Logo AV Running" class="img-logo">
-                <p class="p-logo">AV RUNNING</p>
-            </div>
-            <ul class="menu-principal">
-                <li><a class="links" href="#sedes">Contacto</a></li>
-                <li><a class="links" href="planes/">Planes</a></li>
-                <li><a class="links" href="#contacto">Usuario</a></li>
-            </ul>
-        </nav>
-        
-        <div class="contenedor-textos">
-            <h1>ES MÁS QUE UN ESTILO DE VIDA RUNNING</h1>
-            <h3>¿QUÉ ESPERAS PARA UNIRTE A ESTA BELLA COMUNIDAD?</h3>
-            <button class="btn-afiliate" type="submit" id="btnafiliate">
-                <span class="p-button">Afíliate ya</span>
-                <div class="img-button"></div>
-            </button>
-        </div>
-    </header>
 
-    <section class="seccion-blog-motivacion">
-        <h2>Blog de Motivación</h2>
-        <div class="carrusel-motivacion">
-            
-            <div class="slide-motivacion active">
-                <div class="contenido-slide">
-                    <div class="imagen-slide">
-                        <img src='/static/img/example.jpg' alt="Corredor en la montaña">
-                    </div>
-                    <div class="texto-slide">
-                        <span class="categoria-articulo">ENTRENAMIENTO</span>
-                        <h3>Supera tus límites</h3>
-                        <p>Descubre cómo runners como tú están rompiendo barreras y alcanzando metas que parecían imposibles. Cada paso cuenta en tu journey personal.</p>
-                        <a href="#" class="btn-leer-mas">Leer artículo completo</a>
-                    </div>
-                </div>
+    <section class="header">
+        <nav>
+            <a href="/"><img src="/static/img/Logito.png" alt="Logo VAC"></a>
+
+            <div class="nav-links" id="navLinks">
+                <i class="fa fa-times" onclick="hideMenu()"></i>
+                <ul>
+                    <li><a href="/">Inicio</a></li>
+                    <li><a href="/rutas/">Rutas</a></li>
+                    <li><a href="/tienda/">Tienda</a></li>
+                    <li>
+                            {% if usuario.imagen %}
+                            <a href="/usuario">
+                                <img src="{{ usuario.imagen.url }}" alt="Imagen del usuario" class="logo-perfil">
+                            </a>
+                             {% else %}
+                            <a href="/usuario">
+                                <img src="{% static 'img/default-user.png' %}" alt="Usuario sin imagen" class="logo-perfil">
+                            </a>
+                        {% endif %}
+                    </li>
+                </ul>
             </div>
-            
-            <div class="slide-motivacion">
-                <div class="contenido-slide">
-                    <div class="imagen-slide">
-                        <img src="https://images.unsplash.com/photo-1571008887538-b36bb32f4571?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Grupo de corredores">
-                    </div>
-                    <div class="texto-slide">
-                        <span class="categoria-articulo">MENTALIDAD</span>
-                        <h3>La mentalidad del corredor</h3>
-                        <p>La carrera no solo se gana con las piernas, sino con la mente. Aprende técnicas de enfoque mental que usan los atletas profesionales.</p>
-                        <a href="#" class="btn-leer-mas">Leer artículo completo</a>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Controles del carrusel -->
-            <button class="carrusel-control prev">‹</button>
-            <button class="carrusel-control next">›</button>
-            
-            <!-- Indicadores -->
-            <div class="carrusel-indicadores">
-                <span class="indicador active"></span>
-                <span class="indicador"></span>
-            </div>
+            <i class="fa fa-bars" onclick="showMenu()"></i>
+        </nav>
+
+        <div class="text-box">
+            <h1>VAC_Running</h1>
+            <p>No se trata de ser el más rápido, sino de no rendirse, los límites están en tu mente.</p>
+            <a class="hero-btn">¡BIENVENIDO!</a>
         </div>
     </section>
-    
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const slides = document.querySelectorAll('.slide-motivacion');
-            const indicators = document.querySelectorAll('.indicador');
-            let currentSlide = 0;
-            let slideInterval;
-            
-            function showSlide(index) {
-                slides.forEach(slide => slide.classList.remove('active'));
-                indicators.forEach(ind => ind.classList.remove('active'));
-                
-                slides[index].classList.add('active');
-                indicators[index].classList.add('active');
-                currentSlide = index;
-            }
-            
-            function nextSlide() {
-                let nextSlide = (currentSlide + 1) % slides.length;
-                showSlide(nextSlide);
-            }
-            
-            function prevSlide() {
-                let prevSlide = (currentSlide - 1 + slides.length) % slides.length;
-                showSlide(prevSlide);
-            }
-            
-            document.querySelector('.next').addEventListener('click', function() {
-                nextSlide();
-                resetInterval();
-            });
-            
-            document.querySelector('.prev').addEventListener('click', function() {
-                prevSlide();
-                resetInterval();
-            });
-            
-            indicators.forEach((indicator, index) => {
-                indicator.addEventListener('click', () => {
-                    showSlide(index);
-                    resetInterval();
-                });
-            });
-            
-            function startInterval() {
-                slideInterval = setInterval(nextSlide, 6000);
-            }
-            
-            function resetInterval() {
-                clearInterval(slideInterval);
-                startInterval();
-            }
-            
-            showSlide(0);
-            startInterval();
-            
-            const carrusel = document.querySelector('.carrusel-motivacion');
-            carrusel.addEventListener('mouseenter', () => clearInterval(slideInterval));
-            carrusel.addEventListener('mouseleave', startInterval);
-        });
 
-        const btn = document.getElementById("btnafiliate")
-        btn.addEventListener("click", (event) =>{
-            window.location.href = "registro/";
-        })
-    </script>
+    <section class="dashboard">
+        <h2 class="dashboard-title">¡Hola, {{ usuario_registro.nombre }}!</h2>
+        <p class="dashboard-subtitle">Hoy es un gran día para superarte 💪</p>
 
-    <script>
-        // Efecto de navbar al hacer scroll
-        window.addEventListener('scroll', function() {
-            const navbar = document.getElementById('navbar');
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-        });
-    </script>
+        <div class="quick-actions">
+            <a href="/nueva-ruta/"><button>➕ Nueva Ruta</button></a>
+            <a href="/mis-rutas/"><button>📍 Mis Rutas</button></a>
+            <a href="/estadisticas/"><button>📊 Estadísticas</button></a>
+            <a href="/competencias/"><button>🏁 Competencias</button></a>
+        </div>
+
+        <div class="summary">
+            <h3>🏃 Última Carrera</h3>
+            <p>Distancia: <strong>{{ ultima_carrera.distancia }} km</strong> — Tiempo: <strong>{{ ultima_carrera.tiempo }}</strong> — Ritmo: <strong>{{ ultima_carrera.ritmo }}</strong></p>
+
+            <h3>📈 Progreso Semanal</h3>
+            <p>Entrenamientos: <strong>{{ progreso.entrenamientos }}</strong> — Kilómetros recorridos: <strong>{{ progreso.kilometros }} km</strong></p>
+        </div>
+
+        <div class="upcoming">
+            <h3>📅 Próximo Entrenamiento</h3>
+            <p>{{ proximo_dia }}: <strong>{{ proximo_entrenamiento }}</strong></p>
+        </div>
+
+        <div class="achievements">
+            <h3>🎖️ Logros</h3>
+            <ul>
+                {% for logro in logros %}
+                    <li>✔️ {{ logro }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </section>
+
+    <section class="footer">
+        <h4>Nosotros</h4>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur facilis architecto voluptas possimus.</p>
+
+        <div class="icons">
+            <i class="fa fa-facebook"></i>
+            <i class="fa fa-twitter"></i>
+            <i class="fa fa-instagram"></i>
+            <i class="fa fa-whatsapp"></i>
+        </div>
+    </section>
+
 </body>
 </html>
