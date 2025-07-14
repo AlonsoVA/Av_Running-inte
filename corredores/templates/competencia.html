@@ -1,0 +1,110 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/estilosfinales/home2.0fi.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Document</title>
+</head>
+<body>
+
+    <section class="header">
+
+        <nav>
+
+            <a href="index.html"><img src="imagenes/logo-VAC.webp"></a>
+            <div class="nav-links" id="navLinks">
+                <i class="fa fa-times" onclick="hideMenu()"></i>
+                <ul>
+                    <li><a href='/h-info'>Inicio</a></li>
+                    <li><a href='/rutas'>Rutas</a></li>
+                    <li><a href="Tienda.html">Tienda</a></li>
+                </ul>
+            </div>
+           <i class="fa fa-bars" onclick="showMenu()"></i>
+
+        </nav>
+
+        <div class="text-box">
+            <h1>Competencia</h1>
+            <h1>⬇</h1>
+        </div>
+
+    </section>
+
+    <section class="competencias">
+        <h2>Competencias</h2>
+        <p>Explora las competencias anteriores o participa en las próximas.</p>
+
+        <div class="competencia-container">
+            <!-- Columna izquierda: Competencias pasadas -->
+            <div class="competencias-pasadas">
+                <h3>Competencias Pasadas</h3>
+                <div class="competencia-card">
+                    <h4>Ganador: Los Angeles del Mar</h4>
+                    <p>Ruta: Sendero VAC</p>
+                    <p>Tiempo promedio: 26:43 min</p>
+                    <p>Fecha: 12/05/2025</p>
+                </div>
+                <div class="competencia-card">
+                    <h4>Ganador: Los VACnáticos</h4>
+                    <p>Ruta: Ruta Urbana</p>
+                    <p>Tiempo promedio: 24:15 min</p>
+                    <p>Fecha: 22/04/2025</p>
+                </div>
+            </div>
+
+            <!-- Columna derecha: Competencias actuales o próximas -->
+            <div class="competencias-activas">
+                <h3>Competencias Actuales / Próximas</h3>
+                <div class="competencia-card">
+                    <h4>Ruta: Circuito del Bosque</h4>
+                    <p>VAC Runners vs Los Trotamundos</p>
+                    <p>Tiempo límite: 7 días</p>
+                    <button class="btn-competir">Unirme</button>
+                </div>
+                <div class="competencia-card">
+                    <h4>Ruta: Playa Norte</h4>
+                    <p>Comienza en: 20/06/2025</p>
+                    <p>Equipos por confirmar</p>
+                    <button class="btn-competir">Ver detalles</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="competencia-nueva">
+            <h4>¿Listo para competir?</h4>
+            <p>Desafía a otro equipo en tu ruta favorita.</p>
+            <button class="btn-competir">Iniciar competencia</button>
+        </div>
+
+    </section>
+
+
+    <section class="footer">
+
+        <h4>Nosotros</h4>
+        <p>Lorem ipsum dolor sit, amet consectetur adipisicing 
+            elit.consectetur ab excepturi at accusamus consequatur 
+            facilis architecto voluptas possimus.
+        </p>
+
+        <div class="icons">
+            <i class="fa fa-facebook"></i>
+            <i class="fa fa-twitter"></i>
+            <i class="fa fa-instagram"></i>
+            <i class="fa fa-whatsapp"></i>
+        </div>
+
+    </section>
+    
+    <script src="HomseScript.js"></script>
+
+</body>
+</html>

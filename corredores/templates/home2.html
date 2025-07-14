@@ -12,6 +12,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
 </head>
 <body>
 
@@ -23,14 +24,14 @@
                 <i class="fa fa-times" onclick="hideMenu()"></i>
                 <ul>
                     <li><a href="/">Inicio</a></li>
-                    <li><a href="/rutas/">Rutas</a></li>
+                    <li><a href="/rutas">Rutas</a></li>
                     <li><a href="/tienda/">Tienda</a></li>
                     <li>
-                            {% if usuario.imagen %}
+                            {% if usuario and usuario.imagen %}
                             <a href="/usuario">
                                 <img src="{{ usuario.imagen.url }}" alt="Imagen del usuario" class="logo-perfil">
                             </a>
-                             {% else %}
+                        {% else %}
                             <a href="/usuario">
                                 <img src="{% static 'img/default-user.png' %}" alt="Usuario sin imagen" class="logo-perfil">
                             </a>
@@ -53,10 +54,22 @@
         <p class="dashboard-subtitle">Hoy es un gran día para superarte 💪</p>
 
         <div class="quick-actions">
-            <a href="/nueva-ruta/"><button>➕ Nueva Ruta</button></a>
-            <a href="/mis-rutas/"><button>📍 Mis Rutas</button></a>
-            <a href="/estadisticas/"><button>📊 Estadísticas</button></a>
-            <a href="/competencias/"><button>🏁 Competencias</button></a>
+            <a href='/ruta'><button>➕ Nueva Ruta</button></a>
+            <a href='/rutas'><button>📍 Mis Rutas</button></a>
+            {% if usuario %}
+            <a href="{% url 'infouser' usuario.id %}">
+                <button class="hero-btn">📊 Estadísticas</button>
+            </a>
+            {% else %}
+                    <a href="/usuario/">
+                        <button class="hero-btn" style="border-color: #5ec2e4;">
+                            ✏️ Completar perfil
+                        </button>
+                    </a>
+            {% endif %}
+            <a href="/competencia"><button>🏁 Competencias</button></a>
+            <a href='/rutacargada'><button>🏃 Carga tus rutas</button></a>
+            <a href='/chat_corredor'><button>🏃 Chat_Corredor</button></a>
         </div>
 
         <div class="summary">

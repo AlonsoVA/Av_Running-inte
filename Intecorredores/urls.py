@@ -25,6 +25,8 @@ urlpatterns = [
     path('', views.home, name='Homes'),
     path('h-info/', views.home2, name='Home2'),
     path('ruta/', views.ruta),
+    path('rutacargada/', views.cargaruta),
+    path('rutas/', views.rutas),
     path('rutapre/', views.rutapre),
     path('registro/', views.registro, name='registro'),
     path('login/', views.login_view, name='login'),
@@ -32,6 +34,12 @@ urlpatterns = [
     path('usuario/', views.usuario, name='usuario'),
     path('logout/', views.logout_view, name='logout'),
     path('usuario/info/<str:id>/', views.mostrar_usuario, name='infouser'),
+    path('guardar/', views.guardar_ruta, name='guardar_ruta'),
+    path('competencia/', views.competencia, name='competencia'),
+    path('exportar/<int:ruta_id>/', views.exportar_gpx, name='exportar_gpx'),
+    path('chat_corredor/', views.chat_corredor, name='chat_corredor'),
+    path('tus-rutas/', views.tus_rutas, name='tus_rutas'),
+
 ]
 
 if settings.DEBUG:

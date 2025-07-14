@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Visualizador de GPX - Runners</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Leaflet CSS -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet/dist/leaflet.css"
+  />
+  <style>
+    #map {
+      height: 90vh;
+      width: 100%;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+    }
+    .controls {
+      padding: 10px;
+      background: #f7f7f7;
+    }
+  </style>
+</head>
+<body>
+
+<div class="controls">
+  <input type="file" id="gpxfile" accept=".gpx" />
+</div>
+<div id="map"></div>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<!-- Leaflet GPX plugin -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.4.0/gpx.min.js"></script>
+
+<script>
+  // Crear mapa centrado en algún punto inicial
+  const map = L.map('map').setView([19.4326, -99.1332], 13); // CDMX por ejemplo
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 18,
+  }).addTo(map);
+
+  let gpxLayer = null;
+
+  // Función para cargar archivo GPX desde input
+  document.getElementById('gpxfile').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = function(event) {
+      const gpxText = event.target.result;
+
+      // Si ya hay ruta cargada, la quitamos
+      if (gpxLayer) {
+        map.removeLayer(gpxLayer);
+      }
+
+      // Crear capa GPX desde el texto del archivo
+      gpxLayer = new L.GPX(gpxText, { async: true }).on('loaded', function(evt) {
+        map.fitBounds(evt.target.getBounds());
+      }).addTo(map);
+    };
+
+    reader.readAsText(file);
+  });
+</script>
+
+</body>
+</html>

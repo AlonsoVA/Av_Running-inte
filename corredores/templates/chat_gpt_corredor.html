@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Chat del Corredor</title>
+  <style>
+    body {
+      background: #0d0d0d;
+      color: #fff;
+      font-family: "Roboto", sans-serif;
+    }
+    .chat-box {
+      width: 90%;
+      max-width: 600px;
+      margin: 2rem auto;
+      background: #1a1a1a;
+      padding: 1rem;
+      border-radius: 15px;
+      box-shadow: 0 0 15px #0ff;
+    }
+    .mensaje {
+      margin-bottom: 1rem;
+    }
+    .usuario {
+      color: #0ff;
+      text-align: right;
+    }
+    .bot {
+      color: #0f0;
+      text-align: left;
+    }
+    input, button {
+      padding: 0.5rem;
+      width: 100%;
+      margin-top: 1rem;
+      border-radius: 8px;
+      border: none;
+      font-size: 1rem;
+    }
+    button {
+      background-color: #0ff;
+      color: #000;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #00cccc;
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-box" id="chat-box" data-usuario="{{ usuario_id }}">
+    <h2>Asistente de Corredores 🏃‍♂️</h2>
+    <div id="chat-contenido"></div>
+
+    <input type="text" id="entrada" placeholder="Escribe tu mensaje...">
+    <button onclick="enviarMensaje()">Enviar</button>
+  </div>
+
+  <script>
+    const usuario_id = document.getElementById("chat-box").dataset.usuario;
+
+    function agregarMensaje(texto, clase) {
+      const chat = document.getElementById("chat-contenido");
+      const msg = document.createElement("div");
+      msg.className = "mensaje " + clase;
+      msg.innerText = texto;
+      chat.appendChild(msg);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    function enviarMensaje() {
+      const entrada = document.getElementById("entrada");
+      const mensaje = entrada.value.trim();
+      if (mensaje === "") return;
+
+      agregarMensaje("Tú: " + mensaje, "usuario");
+
+      fetch("", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": "{{ csrf_token }}"
+        },
+        body: JSON.stringify({ mensaje, usuario_id })
+      })
+      .then(res => res.json())
+      .then(data => {
+        agregarMensaje("Asistente: " + data.respuesta, "bot");
+        entrada.value = "";
+      })
+      .catch(err => {
+        agregarMensaje("Error al conectar con el asistente.", "bot");
+        console.error(err);
+      });
+    }
+
+    // Permitir enviar con Enter
+    document.getElementById("entrada").addEventListener("keypress", function (e) {
+      if (e.key === "Enter") {
+        enviarMensaje();
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,16 +1,70 @@
 from django.shortcuts import render, redirect
-from corredores.models import Registros, Usuarioinfo
-from django.http import HttpResponse
+from .models import MensajeChat, Usuarioinfo
+from corredores.models import Registros, Usuarioinfo, Ruta, MensajeChat
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib import messages  # Opcional, para mensajes flash
+import json
+from django.shortcuts import get_object_or_404
+import xml.etree.ElementTree as ET
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt
+def chat_corredor(request):
+    if request.method == "POST":
+        data = json.loads(request.body)
+        mensaje_usuario = data.get('mensaje')
+        usuario_id = data.get('usuario_id')
+
+        # Buscamos el usuario de Registros
+        usuario_registro = Registros.objects.get(id=usuario_id)
+        # Buscamos info extendida, si existe
+        usuario_info = Usuarioinfo.objects.filter(usuario=usuario_registro).first()
+
+        # Si no existe Usuarioinfo, puedes usar usuario_registro para crear mensaje o manejarlo
+        usuario_para_mensaje = usuario_info if usuario_info else usuario_registro
+
+        if "ruta" in mensaje_usuario.lower():
+            respuesta = "Recuerda que puedes ver tus rutas guardadas en la sección de perfil, ¡mantén tu constancia!"
+        elif "ritmo cardíaco" in mensaje_usuario.lower():
+            respuesta = "Tu ritmo cardíaco ideal está entre 120 y 150 bpm para entrenamientos moderados."
+        else:
+            respuesta = "¡Hola! Soy tu asistente de carrera. ¿Quieres consejos para mejorar o ver tu progreso?"
+
+        MensajeChat.objects.create(
+            usuario=usuario_para_mensaje,
+            mensaje_usuario=mensaje_usuario,
+            mensaje_respuesta=respuesta
+        )
+
+        return JsonResponse({"respuesta": respuesta})
+
+    usuario_id = request.session.get('usuario_id')
+    if not usuario_id:
+        return redirect('login')
+
+    return render(request, "chat_gpt_corredor.html", {
+        "usuario_id": usuario_id
+    })
+
+
 
 
 def home(request):
     return render(request, "home.html")
 
 
+def cargaruta(request):
+    return render(request, "cargaruta.html")
+
+def competencia(request):
+    return render(request, "competencia.html")
+
 def ruta(request):
     return render(request, "ruta.html")
+
+def rutas(request):
+    return render(request, "rutas.html")
 
 
 def planes(request):
@@ -34,14 +88,16 @@ def home2(request):
 
     try:
         usuario_registro = Registros.objects.get(id=usuario_id)
-        usuario_info = Usuarioinfo.objects.get(usuario=usuario_registro)
-    except (Registros.DoesNotExist, Usuarioinfo.DoesNotExist):
+    except Registros.DoesNotExist:
         request.session.flush()
         return redirect('login')
 
+    # Buscar info extendida, si existe
+    usuario_info = Usuarioinfo.objects.filter(usuario=usuario_registro).first()
+
     return render(request, 'home2.html', {
         'usuario_registro': usuario_registro,
-        'usuario': usuario_info
+        'usuario': usuario_info  # Puede ser None, está bien
     })
 
 
@@ -74,14 +130,7 @@ def registro(request):
 
             print(f"Usuario creado con ID: {usuario.id}")
 
-            # Evita errores si se está intentando guardar edad, descripcion o imagen que no son del formulario actual
-            Usuarioinfo.objects.create(
-                usuario=usuario,
-                edad="0",  # Valores por defecto
-                descripcion="",
-                imagen=None
-            )
-
+            # Iniciar sesión del nuevo usuario
             request.session['usuario_id'] = usuario.id
             request.session['nombre_usuario'] = usuario.nombre
 
@@ -158,3 +207,80 @@ def usuario(request):
 def mostrar_usuario(request, id):
     usuario = Usuarioinfo.objects.get(id=id)
     return render(request, "infouser.html", {'usuario': usuario})
+
+
+def guardar_ruta(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        nombre = data.get('nombre')
+        nota = data.get('nota', '')
+        distancia = data.get('distancia', 0)
+        coordenadas = data.get('coordenadas', [])
+        usuario_id = request.session.get('usuario_id')
+
+        if not usuario_id:
+            return JsonResponse({'ok': False, 'error': 'Usuario no autenticado'})
+
+        if not nombre or not coordenadas:
+            return JsonResponse({'ok': False, 'error': 'Datos incompletos'})
+
+        usuario = get_object_or_404(Registros, id=usuario_id)
+
+        ruta = Ruta(
+            usuario=usuario,
+            nombre=nombre,
+            nota=nota,
+            distancia=distancia,
+            coordenadas=coordenadas
+        )
+        ruta.save()
+
+        return JsonResponse({'ok': True, 'id': ruta.id})
+
+    return JsonResponse({'ok': False, 'error': 'Método no permitido'})
+
+
+def exportar_gpx(request, ruta_id):
+    ruta = get_object_or_404(Ruta, pk=ruta_id)
+    coords = ruta.coordenadas
+
+    gpx = ET.Element('gpx', version="1.1", creator="RunnersApp")
+    trk = ET.SubElement(gpx, 'trk')
+    name = ET.SubElement(trk, 'name')
+    name.text = ruta.nombre
+    trkseg = ET.SubElement(trk, 'trkseg')
+
+    for punto in coords:
+        trkpt = ET.SubElement(trkseg, 'trkpt', lat=str(punto['lat']), lon=str(punto['lng']))
+
+    xml_str = ET.tostring(gpx, encoding='utf-8', xml_declaration=True)
+
+    response = HttpResponse(xml_str, content_type='application/gpx+xml')
+    response['Content-Disposition'] = f'attachment; filename="{ruta.nombre}.gpx"'
+    return response
+
+
+def tus_rutas(request):
+    usuario_id = request.session.get('usuario_id')
+    if not usuario_id:
+        return redirect('login')
+
+    rutas_usuario = Ruta.objects.filter(usuario_id=usuario_id).order_by('-fecha_creacion')
+
+    rutas_json = []
+    for ruta in rutas_usuario:
+        rutas_json.append({
+            'id': ruta.id,
+            'nombre': ruta.nombre,
+            'nota': ruta.nota,
+            'distancia': ruta.distancia,
+            'coordenadas': ruta.coordenadas,
+        })
+
+    return render(request, 'tus_rutas.html', {
+        'rutas': rutas_usuario,
+        'rutas_json': rutas_json
+    })
+
+
+
